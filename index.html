@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body><title>Backstage da Jéssica</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@500&family=Permanent+Marker&display=swap">
+<style>
+/* Layout: uma coluna estreita (máx. 460px), como uma credencial pendurada no cordão; cada checagem troca no mesmo lugar e o final rola como uma página. Visual único e escuro de propósito, com as cores do cartaz oficial do show no Maracanã. */
+:root{
+  --ink:#141113;          /* fundo: o preto quente do cartaz oficial */
+  --ink-raised:#231d1f;   /* superfícies elevadas */
+  --line:#40363a;         /* bordas e divisórias */
+  --fg:#efe8de;           /* branco gasto dos nomes das bandas */
+  --muted:#b3a89f;        /* texto secundário */
+  --paper:#ebe4d8;        /* ingresso de papel envelhecido */
+  --paper-ink:#141113;
+  --paper-muted:#5f554f;
+  --paper-line:#cfc5b6;
+  --wine:#9e2a35;         /* vinho do "Estádio do Maracanã" no cartaz */
+  --wine-deep:#6e1520;
+  --gold:#e2a64b;         /* dourado do pôr do sol atrás do estádio */
+  --tape:#8c867f;         /* fita silver tape */
+  --glitch:#6f8796;       /* azul acinzentado do céu do cartaz */
+  --glow:rgba(226,166,75,.20);
+  --shadow:rgba(0,0,0,.6);
+  --stamp-bg:rgba(20,17,19,.62);
+  --font-display:"Big Shoulders Stencil Display","Arial Narrow",Impact,sans-serif;
+  --font-body:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --font-hand:"Permanent Marker","Comic Sans MS",cursive;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--ink)}
+body{
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(130% 55% at 50% -8%,var(--glow),transparent 62%) no-repeat,var(--ink);
+  color:var(--fg);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+.wrap{
+  max-width:460px;
+  margin-inline:auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:18px 56px;
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+}
+
+.mono{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+
+/* Barra de checagens */
+.topbar{display:flex;flex-direction:column;gap:10px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.topbar-row{display:flex;justify-content:space-between;gap:12px;color:var(--muted)}
+.checks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.checks li{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  padding:7px 8px;border:1px solid var(--line);border-radius:999px;
+  font-family:var(--font-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);transition:background .3s,color .3s,border-color .3s;
+}
+.checks .dot{width:9px;height:9px;border-radius:50%;border:1.5px solid currentColor;flex:none}
+.checks li.done{background:var(--wine);border-color:var(--wine);color:var(--fg)}
+.checks li.done .dot{background:var(--fg);border-color:var(--fg)}
+
+/* Etapas */
+.step{display:flex;flex-direction:column;gap:18px;animation:step-in .35s ease both}
+@keyframes step-in{from{opacity:.35;transform:translateY(10px)}}
+
+.lead,.prompt{margin:0;font-size:1.08rem}
+.prompt strong{color:var(--gold)}
+.sub{margin:0;color:var(--muted)}
+.feedback{margin:0;min-height:1.5em;color:var(--gold);font-weight:600}
+
+.badge-head{display:flex;flex-direction:column;gap:6px}
+.tag{align-self:flex-start;border:1.5px solid var(--gold);color:var(--gold);padding:3px 8px;border-radius:4px}
+h2{
+  font-family:var(--font-display);font-weight:900;
+  font-size:clamp(2.4rem,11vw,3.2rem);line-height:.9;letter-spacing:.02em;
+  text-transform:uppercase;margin:4px 0 0;text-wrap:balance;
+}
+h2:focus{outline:none}
+
+.btn{
+  appearance:none;border:0;cursor:pointer;width:100%;
+  padding:15px 20px;border-radius:6px;
+  background:var(--wine);color:var(--fg);
+  font-family:var(--font-display);font-weight:900;font-size:1.45rem;letter-spacing:.06em;text-transform:uppercase;
+  box-shadow:0 5px 0 var(--wine-deep);
+  transition:transform .08s,box-shadow .08s;
+}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--wine-deep)}
+.btn.ghost{background:transparent;color:var(--fg);border:1.5px solid var(--line);box-shadow:none;font-size:1.2rem}
+
+/* Credencial da entrada */
+.lanyard{
+  width:34px;height:44px;margin:0 auto -10px;position:relative;z-index:1;
+  background:repeating-linear-gradient(180deg,var(--wine) 0 9px,var(--wine-deep) 9px 11px);
+  border-radius:3px 3px 0 0;
+}
+.pass{
+  position:relative;display:flex;flex-direction:column;gap:10px;
+  background:var(--paper);color:var(--paper-ink);
+  border-radius:16px;padding:30px 22px 20px;
+  transform:rotate(-1.2deg);box-shadow:0 18px 40px var(--shadow);
+}
+.pass::before{content:"";position:absolute;top:12px;left:50%;width:54px;height:9px;margin-left:-27px;border-radius:6px;background:var(--ink)}
+.pass-top{display:flex;justify-content:space-between;gap:12px;color:var(--paper-muted);margin-top:6px}
+.pass-role{font-family:var(--font-display);font-weight:900;font-size:clamp(2.2rem,12.5vw,4rem);line-height:.85;white-space:nowrap;letter-spacing:.02em;margin:6px 0 0}
+.pass-name{font-family:var(--font-hand);font-size:2rem;line-height:1.1;color:var(--wine-deep);margin:0;transform:rotate(-2deg);transform-origin:left}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin:0;padding-top:12px;border-top:1.5px solid var(--paper-line)}
+.fields dt{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--paper-muted)}
+.fields dd{margin:2px 0 0;font-weight:800;min-width:0;overflow-wrap:anywhere}
+.fields .wide{grid-column:1/-1}
+.pending{color:var(--wine-deep)}
+.barcode{
+  height:34px;border-radius:2px;opacity:.85;
+  background:repeating-linear-gradient(90deg,var(--paper-ink) 0 2px,transparent 2px 5px,var(--paper-ink) 5px 6px,transparent 6px 9px,var(--paper-ink) 9px 12px,transparent 12px 14px);
+}
+
+/* Fotos */
+.photo-pick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pick,.pet,.portrait{
+  position:relative;display:block;width:100%;max-width:100%;
+  padding:0;border:0;border-radius:10px;overflow:hidden;
+  background:var(--ink-raised);color:inherit;font:inherit;
+}
+.pick img,.pet img,.portrait img{display:block;width:100%;height:100%;object-fit:cover}
+.pick{aspect-ratio:3/4;cursor:pointer;transition:transform .15s,opacity .25s}
+.pick:not(:disabled):hover{transform:translateY(-3px)}
+.pick:disabled{cursor:default}
+.pick.is-wrong{opacity:.32;animation:shake .4s}
+.pick.is-approved{outline:3px solid var(--gold);outline-offset:2px}
+.pet{aspect-ratio:1/1;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none}
+.pet:disabled{cursor:default}
+.portrait{aspect-ratio:5/4}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+
+.stamp{
+  position:absolute;left:50%;top:50%;pointer-events:none;white-space:nowrap;
+  transform:translate(-50%,-50%) rotate(-12deg) scale(1.7);opacity:0;
+  font-family:var(--font-display);font-weight:900;font-size:2.2rem;letter-spacing:.08em;
+  color:var(--gold);border:3px solid var(--gold);border-radius:6px;padding:2px 12px;
+  background:var(--stamp-bg);
+}
+.pick .stamp{font-size:1rem;padding:2px 6px;border-width:2px}
+.is-approved .stamp{animation:stamp .38s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes stamp{to{opacity:1;transform:translate(-50%,-50%) rotate(-12deg) scale(1)}}
+
+/* Carinho no Cocada */
+.heart{
+  position:absolute;pointer-events:none;font-size:1.9rem;line-height:1;color:var(--wine);
+  transform:translate(-50%,-50%);text-shadow:0 2px 8px var(--shadow);
+  animation:float .9s ease-out forwards;
+}
+@keyframes float{to{transform:translate(calc(-50% + var(--dx,0px)),calc(-50% - 90px)) scale(1.35);opacity:0}}
+.meter{display:flex;flex-direction:column;gap:8px}
+.meter-row{display:flex;justify-content:space-between;gap:12px;color:var(--muted)}
+.meter-row #mood{color:var(--fg)}
+.meter-track{height:14px;border-radius:999px;background:var(--ink-raised);border:1px solid var(--line);overflow:hidden}
+.meter-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--wine-deep),var(--wine));transition:width .25s ease}
+
+/* Senha da Madalena */
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{
+  appearance:none;cursor:pointer;padding:14px 10px;border-radius:8px;
+  border:1.5px solid var(--line);background:var(--ink-raised);color:var(--fg);
+  font-family:var(--font-body);font-weight:600;font-size:1.05rem;
+}
+.opt:not(:disabled):hover{border-color:var(--gold)}
+.opt:disabled{cursor:default}
+.opt.is-wrong{color:var(--muted);text-decoration:line-through}
+.opt.is-right{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+
+/* Revelação */
+.boot{
+  display:flex;flex-direction:column;gap:6px;min-height:10em;
+  padding:18px;border:1px solid var(--line);border-radius:10px;background:var(--ink-raised);
+  font-family:var(--font-mono);font-size:.9rem;color:var(--muted);
+}
+.boot .ok{color:var(--gold)}
+.caret::after{content:"_";animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+.reveal{display:flex;flex-direction:column;gap:22px}
+.eyebrow{margin:0;text-align:center;color:var(--gold);text-wrap:balance}
+
+.ticket{
+  background:var(--paper);color:var(--paper-ink);border-radius:14px;
+  box-shadow:0 22px 50px var(--shadow);transform:rotate(.8deg);
+  animation:ticket-in .75s cubic-bezier(.2,1.25,.4,1) both;
+}
+@keyframes ticket-in{from{transform:translateY(34px) rotate(-5deg) scale(.95);opacity:.25}}
+.ticket-main{display:flex;flex-direction:column;gap:12px;padding:22px 22px 18px}
+.ticket-main .mono{color:var(--paper-muted)}
+.band{
+  position:relative;margin:0;
+  font-family:var(--font-display);font-weight:900;
+  font-size:clamp(2.7rem,13.5vw,3.9rem);line-height:.86;letter-spacing:.01em;text-wrap:balance;
+}
+.band.glitching::before,.band.glitching::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none}
+.band.glitching::before{color:var(--wine);animation:g1 .5s steps(2) 3 both}
+.band.glitching::after{color:var(--glitch);animation:g2 .5s steps(2) 3 both}
+@keyframes g1{
+  0%{clip-path:inset(0 0 72% 0);transform:translate(-5px,0)}
+  25%{clip-path:inset(38% 0 34% 0);transform:translate(5px,0)}
+  50%{clip-path:inset(76% 0 4% 0);transform:translate(-4px,0)}
+  75%{clip-path:inset(12% 0 58% 0);transform:translate(3px,0)}
+  100%{clip-path:inset(0 0 100% 0);transform:none}
+}
+@keyframes g2{
+  0%{clip-path:inset(60% 0 12% 0);transform:translate(5px,0)}
+  25%{clip-path:inset(8% 0 70% 0);transform:translate(-4px,0)}
+  50%{clip-path:inset(44% 0 30% 0);transform:translate(4px,0)}
+  75%{clip-path:inset(82% 0 0 0);transform:translate(-3px,0)}
+  100%{clip-path:inset(0 0 100% 0);transform:none}
+}
+.t-date{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:0;font-family:var(--font-display);font-weight:700;font-size:1.7rem;letter-spacing:.04em;line-height:1}
+.t-date span{color:var(--wine-deep)}
+.t-cats{display:flex;align-items:center;gap:8px}
+.t-cats .faces{display:flex}
+.t-cats img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid var(--paper);margin-left:-9px}
+.t-cats img:first-child{margin-left:0}
+.t-cats span{font-weight:600;font-size:.9rem}
+.perf{position:relative;margin:0 18px;border-top:2px dashed var(--paper-line)}
+.perf::before,.perf::after{content:"";position:absolute;top:-13px;width:24px;height:24px;border-radius:50%;background:var(--ink)}
+.perf::before{left:-30px}
+.perf::after{right:-30px}
+.ticket-stub{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 22px 18px}
+.ticket-stub .mono{color:var(--paper-muted)}
+.stub-admit{font-family:var(--font-display);font-weight:900;font-size:1.35rem;letter-spacing:.06em}
+.ticket-stub .barcode{width:84px;height:28px;flex:none}
+.fine{margin:0;color:var(--muted);font-size:.9rem;text-align:center;text-wrap:balance}
+
+.countdown{display:flex;flex-direction:column;gap:12px;padding:18px;border:1px solid var(--line);border-radius:12px;background:var(--ink-raised);text-align:center}
+.countdown .mono{color:var(--muted)}
+.cd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cd-grid div{display:flex;flex-direction:column;gap:4px}
+.cd-grid b{font-family:var(--font-display);font-weight:900;font-size:clamp(2.2rem,11vw,3rem);line-height:1;font-variant-numeric:tabular-nums}
+.cd-grid div:first-child b{color:var(--gold)}
+.cd-grid small{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cd-today{margin:0;font-family:var(--font-display);font-weight:900;font-size:2.6rem;line-height:1;color:var(--gold)}
+.cd-note{margin:0;color:var(--muted);font-size:.92rem}
+
+.note{
+  position:relative;display:flex;flex-direction:column;gap:12px;
+  background:var(--paper);color:var(--paper-ink);border-radius:4px;
+  padding:30px 22px 22px;transform:rotate(-.8deg);box-shadow:0 14px 30px var(--shadow);
+}
+.tape{position:absolute;top:-12px;left:50%;width:110px;height:26px;margin-left:-55px;background:var(--tape);opacity:.92;transform:rotate(-3deg)}
+.note p{margin:0}
+.note-text{font-size:1.08rem;line-height:1.6}
+.sign{align-self:flex-end;font-family:var(--font-hand);font-size:1.7rem;line-height:1;color:var(--wine-deep);transform:rotate(-3deg)}
+
+.crew{display:flex;flex-direction:column;gap:14px}
+.crew .mono{color:var(--muted);text-align:center}
+.crew ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.crew li{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 6px 8px;background:var(--paper);border-radius:3px;box-shadow:0 8px 18px var(--shadow);min-width:0}
+.crew li:nth-child(1){transform:rotate(-2.5deg)}
+.crew li:nth-child(2){transform:rotate(1.5deg)}
+.crew li:nth-child(3){transform:rotate(-1deg)}
+.crew img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:2px}
+.crew .who{font-family:var(--font-hand);font-size:1.05rem;line-height:1.1;color:var(--paper-ink)}
+.crew .role{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--paper-muted)}
+
+/* Da última vez: o show do Linkin Park */
+.memory{display:flex;flex-direction:column;gap:18px}
+.memory-photo{position:relative;margin:0;padding:10px 10px 14px;background:var(--paper);border-radius:3px;box-shadow:0 14px 30px var(--shadow);transform:rotate(-1.5deg);display:flex;flex-direction:column;gap:8px}
+.memory-photo img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:2px}
+.memory-photo figcaption{font-family:var(--font-hand);font-size:1.15rem;line-height:1.1;color:var(--paper-ink);text-align:center}
+.memory-title{margin:0;font-family:var(--font-display);font-weight:900;font-size:clamp(2rem,9vw,2.6rem);line-height:.95;letter-spacing:.02em;text-transform:uppercase;text-wrap:balance}
+.timeline{list-style:none;margin:0 0 0 7px;padding:0 0 0 20px;border-left:2px solid var(--line);display:flex;flex-direction:column;gap:18px}
+.timeline li{position:relative;display:flex;flex-direction:column;gap:3px}
+.timeline li::before{content:"";position:absolute;left:-28px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--ink);border:2px solid var(--muted)}
+.timeline li:last-child::before{background:var(--gold);border-color:var(--gold)}
+.timeline .mono{color:var(--muted)}
+.timeline strong{font-family:var(--font-display);font-weight:900;font-size:1.7rem;line-height:1;letter-spacing:.03em;text-transform:uppercase}
+.timeline li:last-child strong{color:var(--gold)}
+.timeline .where{color:var(--muted);font-size:.95rem}
+.crew li:nth-child(4){transform:rotate(1.8deg)}
+.crew li:nth-child(5){transform:rotate(-1.5deg)}
+.crew li:nth-child(6){transform:rotate(2.2deg)}
+
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .is-approved .stamp{opacity:1;transform:translate(-50%,-50%) rotate(-12deg)}
+  .band::before,.band::after{content:none!important}
+}
+</style>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <header class="topbar">
+    <div class="topbar-row">
+      <span class="mono">Backstage · 14.11</span>
+      <span class="mono" id="progress">0 de 3 liberados</span>
+    </div>
+    <ol class="checks" aria-label="Checagens da segurança">
+      <li data-cat="chico"><span class="dot"></span>Chico</li>
+      <li data-cat="cocada"><span class="dot"></span>Cocada</li>
+      <li data-cat="madalena"><span class="dot"></span>Madalena</li>
+    </ol>
+  </header>
+
+  <main>
+    <!-- Entrada -->
+    <section class="step" data-step="intro">
+      <div>
+        <div class="lanyard" aria-hidden="true"></div>
+        <div class="pass">
+          <div class="pass-top"><span class="mono">Credencial nº 1411</span><span class="mono">Aniversário</span></div>
+          <p class="pass-role">CONFIDENCIAL</p>
+          <p class="pass-name" data-fill="nome">Jéssica</p>
+          <dl class="fields">
+            <div><dt>Acesso</dt><dd class="pending">Pendente</dd></div>
+            <div><dt>Liberação</dt><dd>3 gatos</dd></div>
+          </dl>
+          <div class="barcode" aria-hidden="true"></div>
+        </div>
+      </div>
+      <p class="lead">Tem um presente de aniversário te esperando no backstage. Mas a segurança daqui é feita por três gatos muito exigentes, e cada um vai te liberar de um jeito diferente.</p>
+      <button class="btn" type="button" data-go="chico">Começar o credenciamento</button>
+    </section>
+
+    <!-- Checagem 1: Chico -->
+    <section class="step" data-step="chico" hidden>
+      <div class="badge-head">
+        <span class="mono tag">Agente 01</span>
+        <h2>Chefe da segurança</h2>
+        <p class="sub"><b>Ficha corrida:</b> 14 objetos derrubados da mesa, 3 cortinas escaladas, 1 tentativa de fuga pela janela.<br><b>Situação:</b> promovido a chefe da segurança mesmo assim.</p>
+      </div>
+      <p class="prompt">Primeira checagem: qual desses é o <strong>Chico</strong>?</p>
+      <div class="photo-pick" id="chico-pick"></div>
+      <p class="feedback" id="chico-fb" aria-live="polite"></p>
+      <button class="btn" type="button" data-go="cocada" id="chico-next" hidden>Próxima checagem</button>
+    </section>
+
+    <!-- Checagem 2: Cocada -->
+    <section class="step" data-step="cocada" hidden>
+      <div class="badge-head">
+        <span class="mono tag">Agente 02</span>
+        <h2>Cocada</h2>
+        <p class="sub">Cuida do humor do backstage. Hoje ele acordou de cara fechada.</p>
+      </div>
+      <p class="prompt">Ele só libera a passagem depois de muito carinho. <strong>Toque na foto</strong> pra fazer carinho.</p>
+      <button class="pet" type="button" id="pet" aria-label="Fazer carinho no Cocada">
+        <img id="pet-img" src="fotos/cocada6.jpg" alt="Cocada de cara fechada" style="object-position:50% 28%" draggable="false">
+        <span class="stamp">LIBERADO</span>
+      </button>
+      <div class="meter">
+        <div class="meter-row"><span class="mono">Humor do Cocada</span><span class="mono" id="mood">Péssimo</span></div>
+        <div class="meter-track" role="progressbar" aria-label="Humor do Cocada" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="meter"><div class="meter-fill" id="meter-fill"></div></div>
+      </div>
+      <p class="feedback" id="cocada-fb" aria-live="polite"></p>
+      <button class="btn" type="button" data-go="madalena" id="cocada-next" hidden>Próxima checagem</button>
+    </section>
+
+    <!-- Checagem 3: Madalena -->
+    <section class="step" data-step="madalena" hidden>
+      <div class="badge-head">
+        <span class="mono tag">Agente 03</span>
+        <h2>Madalena</h2>
+        <p class="sub">Guarda a senha final. Não se deixe enganar pelo bigode.</p>
+      </div>
+      <div class="portrait" id="mada-portrait">
+        <img id="mada-img" src="fotos/madalena2.jpg" alt="Madalena encarando a câmera" style="object-position:50% 38%">
+        <span class="stamp">LIBERADO</span>
+      </div>
+      <p class="prompt">Pergunta da Madalena: há quantos anos você e o <span data-fill="remetente">Matheus</span> são amigos?</p>
+      <div class="options" id="mada-options"></div>
+      <p class="feedback" id="mada-fb" aria-live="polite"></p>
+      <button class="btn" type="button" data-go="reveal" id="mada-next" hidden>Abrir o backstage</button>
+    </section>
+
+    <!-- Revelação -->
+    <section class="step" data-step="reveal" hidden>
+      <div class="boot" id="boot" aria-live="polite"></div>
+      <div class="reveal" id="reveal" hidden>
+        <p class="mono eyebrow">Acesso liberado · Feliz aniversário, <span data-fill="nome">Jéssica</span></p>
+
+        <article class="ticket" aria-label="Ingresso de aniversário">
+          <div class="ticket-main">
+            <p class="mono" style="margin:0">Ingresso de aniversário</p>
+            <h2 class="band" id="band" tabindex="-1" data-text="SYSTEM OF A DOWN">SYSTEM OF A DOWN</h2>
+            <p class="t-date"><span id="t-dow">Sexta</span><strong id="t-date">15.01.2027</strong></p>
+            <dl class="fields">
+              <div><dt>Portadora</dt><dd data-fill="nome">Jéssica</dd></div>
+              <div><dt>Acompanhante</dt><dd data-fill="remetente">Matheus</dd></div>
+              <div class="wide" id="t-local-row" hidden><dt>Local</dt><dd id="t-local"></dd></div>
+              <div class="wide"><dt>Liberado por</dt>
+                <dd class="t-cats">
+                  <span class="faces">
+                    <img src="fotos/chico1.jpg" alt="" style="object-position:50% 35%">
+                    <img src="fotos/cocada1.jpg" alt="" style="object-position:50% 38%">
+                    <img src="fotos/madalena2.jpg" alt="" style="object-position:50% 40%">
+                  </span>
+                  <span>Chico, Cocada e Madalena</span>
+                </dd>
+              </div>
+            </dl>
+          </div>
+          <div class="perf" aria-hidden="true"></div>
+          <div class="ticket-stub">
+            <span class="mono">Nº 001</span>
+            <span class="stub-admit">ADMITE 2</span>
+            <div class="barcode" aria-hidden="true"></div>
+          </div>
+        </article>
+
+        <p class="fine">Esse é o seu ingresso-lembrança, pra guardar. O ingresso oficial está com o <span data-fill="remetente">Matheus</span>, e vocês vão juntos.</p>
+
+        <section class="memory" aria-label="Da última vez">
+          <figure class="memory-photo">
+            <div class="tape" aria-hidden="true"></div>
+            <img src="fotos/linkin_park_credentials.jpg" alt="Os pulsos de vocês dois com as pulseiras do Pit 1 do Linkin Park" style="object-position:50% 80%">
+            <figcaption>Pit 1 · São Paulo · 08.11.2025</figcaption>
+          </figure>
+          <h3 class="memory-title">Ano passado, a minha banda favorita. Agora, a sua.</h3>
+          <ol class="timeline">
+            <li><span class="mono">08.11.2025 · São Paulo</span><strong>Linkin Park</strong><span class="where">Pit 1, de pulseira no braço · a banda favorita do <span data-fill="remetente">Matheus</span></span></li>
+            <li><span class="mono">15.01.2027 · Rio de Janeiro</span><strong>System of a Down</strong><span class="where">Maracanã · a banda favorita da <span data-fill="nome">Jéssica</span></span></li>
+          </ol>
+        </section>
+
+        <section class="countdown" aria-label="Contagem regressiva">
+          <p class="mono" style="margin:0" id="cd-label">Faltam</p>
+          <div class="cd-grid" id="cd-grid">
+            <div><b id="cd-d">00</b><small>dias</small></div>
+            <div><b id="cd-h">00</b><small>horas</small></div>
+            <div><b id="cd-m">00</b><small>min</small></div>
+            <div><b id="cd-s">00</b><small>seg</small></div>
+          </div>
+          <p class="cd-today" id="cd-today" hidden></p>
+          <p class="cd-note" id="cd-note">até o dia do show</p>
+        </section>
+
+        <section class="note" aria-label="Bilhete">
+          <div class="tape" aria-hidden="true"></div>
+          <p class="note-text" id="note-text"></p>
+          <p class="sign" data-fill="remetente">Matheus</p>
+        </section>
+
+        <section class="crew">
+          <p class="mono" style="margin:0">Assinado pela segurança</p>
+          <ul>
+            <li><img src="fotos/chico2.jpg" alt="Chico"><span class="who">Chico</span><span class="role">Chefe</span></li>
+            <li><img src="fotos/cocada2.jpg" alt="Cocada"><span class="who">Cocada</span><span class="role">Humor</span></li>
+            <li><img src="fotos/madalena1.jpg" alt="Madalena mostrando a língua"><span class="who">Madalena</span><span class="role">Senha</span></li>
+          </ul>
+        </section>
+
+        <section class="crew">
+          <p class="mono" style="margin:0">Bastidores da segurança</p>
+          <ul>
+            <li><img src="fotos/chico3.jpg" alt="Chico encarando a câmera"><span class="who">Chico</span><span class="role">Pose oficial</span></li>
+            <li><img src="fotos/cocada5.jpg" alt="Cocada encarando a câmera, sério"><span class="who">Cocada</span><span class="role">Julgando você</span></li>
+            <li><img src="fotos/madalena3.jpg" alt="Madalena de olhos quase fechados"><span class="who">Madalena</span><span class="role">Cochilo em serviço</span></li>
+            <li><img src="fotos/chico6.jpg" alt="Chico bocejando de boca bem aberta"><span class="who">Chico</span><span class="role">Rugido · depois de quebrar algo</span></li>
+            <li><img src="fotos/chico4.jpg" alt="Chico espiando por cima do cobertor"><span class="who">Chico</span><span class="role">Ronda</span></li>
+            <li><img src="fotos/chico5.jpg" alt="Chico deitado de lado, relaxado" style="object-position:45% 50%"><span class="who">Chico</span><span class="role">Folga</span></li>
+          </ul>
+        </section>
+
+        <button class="btn ghost" type="button" id="replay">Refazer o credenciamento</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+/* ============================================================
+   EDITE AQUI: textos e dados do presente
+   ============================================================ */
+const CONFIG = {
+  nome: "Jéssica",
+  remetente: "Matheus",
+  anosDeAmizade: 10,
+  show: {
+    data: "2027-01-15",  // AAAA-MM-DD
+    horario: "16:00",    // abertura dos portões. Vazio = contagem até o começo do dia do show
+    local: "Maracanã, Rio de Janeiro"  // vazio = a linha some do ingresso
+  },
+  bilhete: "Jéssica, feliz aniversário! A gente é amigo há uns 10 anos, e eu queria te dar uma noite que vire história pros próximos 10. Dia 15 de janeiro a gente vai estar lá, cantando tudo e perdendo a voz juntos."
+};
+/* ============================================================ */
+
+const STORE_KEY = "backstage-jessica-2026";
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = (id) => document.getElementById(id);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function storeGet() { try { return localStorage.getItem(STORE_KEY); } catch (e) { return null; } }
+function storeSet(v) { try { localStorage.setItem(STORE_KEY, v); } catch (e) {} }
+function storeDel() { try { localStorage.removeItem(STORE_KEY); } catch (e) {} }
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ---------- Textos ---------- */
+function fillTexts() {
+  document.querySelectorAll("[data-fill]").forEach((el) => { el.textContent = CONFIG[el.dataset.fill]; });
+  $("note-text").textContent = CONFIG.bilhete;
+  const [y, m, d] = CONFIG.show.data.split("-");
+  $("t-date").textContent = `${d}.${m}.${y}`;
+  const dow = new Date(`${CONFIG.show.data}T12:00:00-03:00`)
+    .toLocaleDateString("pt-BR", { weekday: "long", timeZone: "America/Sao_Paulo" })
+    .split("-")[0];
+  $("t-dow").textContent = dow.charAt(0).toUpperCase() + dow.slice(1);
+  if (CONFIG.show.local) {
+    $("t-local").textContent = CONFIG.show.local;
+    $("t-local-row").hidden = false;
+  }
+}
+
+/* ---------- Navegação e progresso ---------- */
+const CATS = ["chico", "cocada", "madalena"];
+
+function markDone(cat) {
+  document.querySelector(`.checks li[data-cat="${cat}"]`).classList.add("done");
+  updateProgress();
+}
+function updateProgress() {
+  const n = document.querySelectorAll(".checks li.done").length;
+  $("progress").textContent = `${n} de 3 liberados`;
+}
+
+function go(step, opts = {}) {
+  document.querySelectorAll(".step").forEach((s) => { s.hidden = s.dataset.step !== step; });
+  if (!opts.initial) window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  const sec = document.querySelector(`.step[data-step="${step}"]`);
+  const h = sec.querySelector("h2");
+  if (h && !opts.initial) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
+  if (step === "reveal") runReveal(!!opts.instant);
+}
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-go]");
+  if (b) go(b.dataset.go);
+});
+
+/* ---------- Checagem 1: Chico ---------- */
+const PICK = [
+  { cat: "chico", src: "fotos/chico1.jpg", pos: "50% 35%" },
+  { cat: "cocada", src: "fotos/cocada1.jpg", pos: "50% 38%" },
+  { cat: "madalena", src: "fotos/madalena2.jpg", pos: "50% 40%" }
+];
+const PICK_WRONG = {
+  cocada: "Esse é o Cocada, e ele ficou ofendido. O Chico já derrubou coisa mais importante que essa resposta. Tenta de novo.",
+  madalena: "Essa é a Madalena, que adorou a confusão. O Chico já derrubou coisa mais importante que essa resposta. Tenta de novo."
+};
+
+function setupChico() {
+  const box = $("chico-pick");
+  box.innerHTML = "";
+  $("chico-fb").textContent = "";
+  $("chico-next").hidden = true;
+  shuffle(PICK).forEach((p, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "pick";
+    b.setAttribute("aria-label", `Opção ${i + 1}`);
+    b.innerHTML = `<img src="${p.src}" alt="" style="object-position:${p.pos}" draggable="false"><span class="stamp">LIBERADO</span>`;
+    b.addEventListener("click", () => {
+      if (p.cat === "chico") {
+        b.classList.add("is-approved");
+        box.querySelectorAll(".pick").forEach((x) => { x.disabled = true; });
+        $("chico-fb").textContent = "O Chico liberou. Mas ele já está derrubando alguma coisa na cozinha.";
+        markDone("chico");
+        $("chico-next").hidden = false;
+      } else {
+        b.classList.add("is-wrong");
+        b.disabled = true;
+        $("chico-fb").textContent = PICK_WRONG[p.cat];
+      }
+    });
+    box.appendChild(b);
+  });
+}
+
+/* ---------- Checagem 2: Cocada ---------- */
+const PETS_NEEDED = 12;
+const MOODS = ["Péssimo", "Desconfiado", "Pensando no caso", "Quase lá", "Liberado"];
+const PET_LINES = {
+  3: "Ele piscou devagar. É um bom sinal.",
+  6: "Saiu um ronrom baixinho. Continua.",
+  9: "Ele já esqueceu por que estava bravo.",
+  12: "Cruzou as patinhas. Pode passar."
+};
+let pets = 0;
+/* Uma foto por estágio de humor: a cara do Cocada vai mudando com o carinho */
+const PET_PHOTOS = [
+  { src: "fotos/cocada6.jpg", pos: "50% 28%", alt: "Cocada de cara fechada" },
+  { src: "fotos/cocada4.jpg", pos: "50% 38%", alt: "Cocada olhando de lado, desconfiado" },
+  { src: "fotos/cocada5.jpg", pos: "50% 32%", alt: "Cocada pensando no caso" },
+  { src: "fotos/cocada3.jpg", pos: "50% 55%", alt: "Cocada de olhos arregalados, quase convencido" },
+  { src: "fotos/cocada2.jpg", pos: "50% 30%", alt: "Cocada relaxado, com as patinhas cruzadas" }
+];
+PET_PHOTOS.forEach((p) => { const i = new Image(); i.src = p.src; });
+function petPhoto(stage) {
+  const p = PET_PHOTOS[stage];
+  const img = $("pet-img");
+  if (img.getAttribute("src") !== p.src) img.src = p.src;
+  img.alt = p.alt;
+  img.style.objectPosition = p.pos;
+}
+
+function setupCocada() {
+  pets = 0;
+  petPhoto(0);
+  $("pet").classList.remove("is-approved");
+  $("pet").disabled = false;
+  $("meter-fill").style.width = "0%";
+  $("meter").setAttribute("aria-valuenow", "0");
+  $("mood").textContent = MOODS[0];
+  $("cocada-fb").textContent = "";
+  $("cocada-next").hidden = true;
+}
+
+$("pet").addEventListener("click", (e) => {
+  if (pets >= PETS_NEEDED) return;
+  pets++;
+  const pet = $("pet");
+  if (!reduceMotion) {
+    const r = pet.getBoundingClientRect();
+    const fromPointer = e.detail > 0 && e.clientX;
+    const heart = document.createElement("span");
+    heart.className = "heart";
+    heart.textContent = "♥";
+    heart.style.left = (fromPointer ? e.clientX - r.left : r.width / 2) + "px";
+    heart.style.top = (fromPointer ? e.clientY - r.top : r.height / 2) + "px";
+    heart.style.setProperty("--dx", (Math.random() * 60 - 30).toFixed(0) + "px");
+    heart.addEventListener("animationend", () => heart.remove());
+    pet.appendChild(heart);
+  }
+  const pct = Math.round((pets / PETS_NEEDED) * 100);
+  $("meter-fill").style.width = pct + "%";
+  $("meter").setAttribute("aria-valuenow", String(pct));
+  const stage = Math.min(MOODS.length - 1, Math.floor(pets / 3));
+  $("mood").textContent = MOODS[stage];
+  petPhoto(stage);
+  if (PET_LINES[pets]) $("cocada-fb").textContent = PET_LINES[pets];
+  if (pets === PETS_NEEDED) {
+    pet.classList.add("is-approved");
+    pet.disabled = true;
+    markDone("cocada");
+    $("cocada-next").hidden = false;
+  }
+});
+
+/* ---------- Checagem 3: Madalena ---------- */
+let madaTimer = null;
+
+function madaPhoto(blep) {
+  const img = $("mada-img");
+  img.src = blep ? "fotos/madalena1.jpg" : "fotos/madalena2.jpg";
+  img.alt = blep ? "Madalena mostrando a língua" : "Madalena encarando a câmera";
+  img.style.objectPosition = blep ? "50% 40%" : "50% 38%";
+}
+
+function setupMadalena() {
+  clearTimeout(madaTimer);
+  madaPhoto(false);
+  $("mada-portrait").classList.remove("is-approved");
+  $("mada-fb").textContent = "";
+  $("mada-next").hidden = true;
+  const anos = CONFIG.anosDeAmizade;
+  const nums = [Math.max(1, anos - 3), anos, anos + 5].filter((n, i, a) => a.indexOf(n) === i);
+  const opts = nums.map((n) => ({ label: `${n} ${n === 1 ? "ano" : "anos"}`, value: n }));
+  opts.push({ label: "Perdi a conta", value: null });
+  const box = $("mada-options");
+  box.innerHTML = "";
+  opts.forEach((o) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "opt";
+    b.textContent = o.label;
+    b.addEventListener("click", () => {
+      clearTimeout(madaTimer);
+      if (o.value === anos) {
+        madaPhoto(false);
+        b.classList.add("is-right");
+        box.querySelectorAll(".opt").forEach((x) => { x.disabled = true; });
+        $("mada-portrait").classList.add("is-approved");
+        $("mada-fb").textContent = `Senha aceita. ${anos} anos, e contando.`;
+        markDone("madalena");
+        $("mada-next").hidden = false;
+      } else if (o.value === null) {
+        $("mada-fb").textContent = "Resposta fofa, mas a Madalena quer um número.";
+      } else {
+        b.classList.add("is-wrong");
+        b.disabled = true;
+        madaPhoto(true);
+        $("mada-fb").textContent = "A Madalena mostrou a língua pra você. Tenta de novo.";
+        madaTimer = setTimeout(() => madaPhoto(false), 1800);
+      }
+    });
+    box.appendChild(b);
+  });
+}
+
+/* ---------- Revelação ---------- */
+let revealRun = 0;
+
+async function runReveal(instant) {
+  const run = ++revealRun;
+  const boot = $("boot");
+  const reveal = $("reveal");
+  boot.innerHTML = "";
+  reveal.hidden = true;
+  boot.hidden = instant;
+
+  if (!instant) {
+    const lines = [
+      [`> credencial: ${CONFIG.nome}`, ""],
+      ["> chico ........ ", "liberado"],
+      ["> cocada ....... ", "liberado"],
+      ["> madalena ..... ", "liberada"],
+      ["> último show juntos: linkin park, 08.11.2025", ""],
+      ["> iniciando system", ""]
+    ];
+    for (let i = 0; i < lines.length; i++) {
+      await sleep(reduceMotion ? 120 : 480);
+      if (run !== revealRun) return;
+      boot.querySelectorAll(".caret").forEach((c) => c.classList.remove("caret"));
+      const row = document.createElement("div");
+      row.textContent = lines[i][0];
+      if (lines[i][1]) {
+        const ok = document.createElement("span");
+        ok.className = "ok";
+        ok.textContent = lines[i][1];
+        row.appendChild(ok);
+      }
+      if (i === lines.length - 1) row.classList.add("caret");
+      boot.appendChild(row);
+    }
+    await sleep(reduceMotion ? 200 : 1100);
+    if (run !== revealRun) return;
+  }
+
+  boot.hidden = true;
+  reveal.hidden = false;
+  const band = $("band");
+  band.classList.remove("glitching");
+  void band.offsetWidth;
+  if (!instant) {
+    band.classList.add("glitching");
+    band.focus({ preventScroll: true });
+    confetti();
+  }
+  storeSet("done");
+}
+
+$("replay").addEventListener("click", () => {
+  revealRun++;
+  storeDel();
+  document.querySelectorAll(".checks li").forEach((li) => li.classList.remove("done"));
+  updateProgress();
+  setupChico();
+  setupCocada();
+  setupMadalena();
+  go("intro");
+});
+
+/* ---------- Contagem regressiva ---------- */
+function showTarget() {
+  const t = CONFIG.show.horario || "00:00";
+  return new Date(`${CONFIG.show.data}T${t}:00-03:00`);
+}
+function tick() {
+  const target = showTarget();
+  const diff = target - Date.now();
+  if (diff <= 0) {
+    $("cd-grid").hidden = true;
+    $("cd-label").hidden = true;
+    $("cd-today").hidden = false;
+    const over = Date.now() - target > 24 * 3600 * 1000;
+    $("cd-today").textContent = over ? "Missão cumprida" : "É hoje!";
+    $("cd-note").textContent = over ? "e ninguém tira essa noite da gente." : "Hidrata, come alguma coisa e guarda a voz.";
+    return;
+  }
+  const pad = (n) => String(n).padStart(2, "0");
+  const s = Math.floor(diff / 1000);
+  $("cd-d").textContent = Math.floor(s / 86400);
+  $("cd-h").textContent = pad(Math.floor((s % 86400) / 3600));
+  $("cd-m").textContent = pad(Math.floor((s % 3600) / 60));
+  $("cd-s").textContent = pad(s % 60);
+  $("cd-note").textContent = CONFIG.show.horario ? `até os portões abrirem, às ${CONFIG.show.horario.replace(":00", "h")}` : "até o dia do show";
+}
+
+/* ---------- Confete ---------- */
+function confetti() {
+  if (reduceMotion) return;
+  const c = $("confetti");
+  const ctx = c.getContext("2d");
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = window.innerWidth, H = window.innerHeight;
+  c.width = W * dpr; c.height = H * dpr;
+  ctx.scale(dpr, dpr);
+  const css = getComputedStyle(document.documentElement);
+  const colors = ["--wine", "--gold", "--paper", "--glitch"].map((v) => css.getPropertyValue(v).trim());
+  const parts = Array.from({ length: 150 }, () => ({
+    x: Math.random() * W,
+    y: -20 - Math.random() * H * 0.5,
+    vx: Math.random() * 2 - 1,
+    vy: 2 + Math.random() * 3,
+    r: Math.random() * Math.PI,
+    vr: Math.random() * 0.2 - 0.1,
+    w: 5 + Math.random() * 5,
+    h: 8 + Math.random() * 8,
+    c: colors[Math.floor(Math.random() * colors.length)]
+  }));
+  const start = performance.now();
+  (function frame(now) {
+    const t = now - start;
+    ctx.clearRect(0, 0, W, H);
+    parts.forEach((p) => {
+      p.x += p.vx + Math.sin((t / 400) + p.r) * 0.6;
+      p.y += p.vy;
+      p.r += p.vr;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.r);
+      ctx.globalAlpha = t > 3200 ? Math.max(0, 1 - (t - 3200) / 800) : 1;
+      ctx.fillStyle = p.c;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * Math.abs(Math.cos(p.r * 2)));
+      ctx.restore();
+    });
+    if (t < 4000) requestAnimationFrame(frame);
+    else ctx.clearRect(0, 0, W, H);
+  })(start);
+}
+
+/* ---------- Início ---------- */
+fillTexts();
+setupChico();
+setupCocada();
+setupMadalena();
+tick();
+setInterval(tick, 1000);
+
+if (storeGet() === "done") {
+  CATS.forEach(markDone);
+  go("reveal", { initial: true, instant: true });
+} else {
+  go("intro", { initial: true });
+}
+</script>
+
+</body>
+</html>
