@@ -296,6 +296,7 @@ h2:focus{outline:none}
 .timeline strong{font-family:var(--font-display);font-weight:900;font-size:1.7rem;line-height:1;letter-spacing:.03em;text-transform:uppercase}
 .timeline li:last-child strong{color:var(--gold)}
 .timeline .where{color:var(--muted);font-size:.95rem}
+.lego-memory{transform:rotate(1.5deg);margin-top:4px}
 .crew li:nth-child(4){transform:rotate(1.8deg)}
 .crew li:nth-child(5){transform:rotate(-1.5deg)}
 .crew li:nth-child(6){transform:rotate(2.2deg)}
@@ -388,9 +389,14 @@ h2:focus{outline:none}
         <img id="mada-img" src="fotos/madalena2.jpg" alt="Madalena encarando a câmera" style="object-position:50% 38%">
         <span class="stamp">LIBERADO</span>
       </div>
-      <p class="prompt">Pergunta da Madalena: há quantos anos você e o <span data-fill="remetente">Matheus</span> são amigos?</p>
+      <p class="prompt">Pergunta da Madalena: quantas malas foram necessárias pra trazer os <strong>Legos da Eurotrip</strong>?</p>
       <div class="options" id="mada-options"></div>
       <p class="feedback" id="mada-fb" aria-live="polite"></p>
+      <figure class="memory-photo lego-memory" id="mada-memory" hidden>
+        <div class="tape" aria-hidden="true"></div>
+        <img src="fotos/eurotrip_lego.jpg" alt="Jéssica numa loja de Lego segurando a caixa que ela tanto procurava" style="object-position:50% 15%">
+        <figcaption>França, Suíça, Alemanha, Áustria, Bélgica... até achar o Lego certo</figcaption>
+      </figure>
       <button class="btn" type="button" data-go="reveal" id="mada-next" hidden>Abrir o backstage</button>
     </section>
 
@@ -496,7 +502,6 @@ h2:focus{outline:none}
 const CONFIG = {
   nome: "Jéssica",
   remetente: "Matheus",
-  anosDeAmizade: 10,
   show: {
     data: "2027-01-15",  // AAAA-MM-DD
     horario: "16:00",    // abertura dos portões. Vazio = contagem até o começo do dia do show
@@ -691,10 +696,15 @@ function setupMadalena() {
   $("mada-portrait").classList.remove("is-approved");
   $("mada-fb").textContent = "";
   $("mada-next").hidden = true;
-  const anos = CONFIG.anosDeAmizade;
-  const nums = [Math.max(1, anos - 3), anos, anos + 5].filter((n, i, a) => a.indexOf(n) === i);
-  const opts = nums.map((n) => ({ label: `${n} ${n === 1 ? "ano" : "anos"}`, value: n }));
-  opts.push({ label: "Perdi a conta", value: null });
+  $("mada-memory").hidden = true;
+  /* Eurotrip: compraram uma mala só pros Legos e no fim precisaram de duas */
+  const MALAS_CERTAS = 2;
+  const opts = [
+    { label: "1 mala", value: 1, fb: "Esse era o plano. A Madalena sabe a verdade." },
+    { label: "2 malas", value: 2 },
+    { label: "3 malas", value: 3, fb: "Quase. Mas a Madalena acha que vocês ainda tiveram algum controle." },
+    { label: "Lego não ocupa espaço", value: null, fb: "A companhia aérea discorda." }
+  ];
   const box = $("mada-options");
   box.innerHTML = "";
   opts.forEach((o) => {
@@ -704,21 +714,20 @@ function setupMadalena() {
     b.textContent = o.label;
     b.addEventListener("click", () => {
       clearTimeout(madaTimer);
-      if (o.value === anos) {
+      if (o.value === MALAS_CERTAS) {
         madaPhoto(false);
         b.classList.add("is-right");
         box.querySelectorAll(".opt").forEach((x) => { x.disabled = true; });
         $("mada-portrait").classList.add("is-approved");
-        $("mada-fb").textContent = `Senha aceita. ${anos} anos, e contando.`;
+        $("mada-fb").textContent = "Senha aceita. Uma mala comprada só pros Legos, e mesmo assim precisou de outra.";
+        $("mada-memory").hidden = false;
         markDone("madalena");
         $("mada-next").hidden = false;
-      } else if (o.value === null) {
-        $("mada-fb").textContent = "Resposta fofa, mas a Madalena quer um número.";
       } else {
         b.classList.add("is-wrong");
         b.disabled = true;
         madaPhoto(true);
-        $("mada-fb").textContent = "A Madalena mostrou a língua pra você. Tenta de novo.";
+        $("mada-fb").textContent = o.fb + " Tenta de novo.";
         madaTimer = setTimeout(() => madaPhoto(false), 1800);
       }
     });
